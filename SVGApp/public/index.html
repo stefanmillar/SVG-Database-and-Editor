@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>SVG Image Viewer</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="CHANGE ME">
+    <meta name="keywords" content="CHANGE ME">
+    <meta name="author" content="CHANGE ME">
+    <!-- Load jquery, bootstrap -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" type="text/css" href="/style.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:900|Work+Sans:300" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,700|Prata" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Karla:400,700|Martel:400,700" rel="stylesheet">
+    <!-- Custom CSS End -->
+</head>
+
+<body>
+    <h1>SVG Image Database and Editor</h1>
+    <!-- File Log Panel Table -->
+    <h3>File Log</h3>
+    <div class="panels">
+        <table id="fileLog">
+            <tr>
+                <th>Image<br>(click to download)</th>
+                <th>Filename<br>(click to<br>download)</th>
+                <th>Filesize</th>
+                <th>Number of<br>Rectangles</th>
+                <th>Number<br>of Circles</th>
+                <th>Number<br>of paths</th>
+                <th>Number<br>of groups</th>
+            </tr>
+        </table>
+    </div>
+
+    <div id="addSVGs">
+    <form action="/upload" id="uploadForm" method="post" enctype="multipart/form-data">
+        <label for="upload">Upload an SVG Image:</label>
+        <input type="file" id="uploadFile" name="uploadFile" accept="image/SVG" size="50">
+        <input type="submit">
+    </form>
+
+    <form action="addSVG" method="post" id="submitNewSVG">
+        <label for="newSVG">Create New SVG</label>
+        <input type="text" id="newSVG">
+        <input type="submit">
+    </form>
+    </div>
+
+    <br>
+    <br>
+    <!-- SVG View Panel Table -->
+    <div id="imageSelect">
+        <h3 id="viewPanelHead">SVG View Panel</h3>
+        <div id="dropdownDiv">
+            <label for="ImageDropDown" required>Choose an Image:</label>
+            <select id="ImageDropdown">
+                <option>Select Image</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="panels">
+    <div class="scrollit">
+        <table id="components">
+            <tr id="ImageView">
+                <td colspan="6"></td>
+            </tr>
+            <tr>
+                <td id="title" colspan="3">Title:</td>
+                <td id="desc" colspan="3">Description:</td>
+            </tr>
+            <tr>
+                <th colspan="2">Component</th>
+                <th colspan="2">Summary</th>
+                <th colspan="2">Other Attributes</th>
+            </tr>
+        </table>
+    </div>
+    </div>
+
+    <!-- Edit selections -->
+    <div id="editWindow">
+        <div id="compSelection">
+            <h3 id="editHead">EDIT WINDOW</h1>
+            <div id="components">
+                <label for="Component">Choose a Component:</label>
+                <select id="componentDrop"></select>
+            </div>
+        </div>
+
+        <!-- Scale the shape -->
+        <form action="/scaleShape" id="scaleForm" method="post" class="edit">
+            <label for="Scale">Scale the Component (0 - 10x):</label>
+            <input type="text" id="Scale">
+            <input type="submit">
+        </form>
+
+        <!-- Add a shape -->
+        <div class="edit">
+        <label for="Shape" style="padding-left: 121.27px;">Add a Shape:</label>
+        <select id="Shape">
+            <option>Rectangle</option>
+            <option>Circle</option>
+        </select>
+        <button id="addShape">Add</button>
+        </div>
+
+        <!--Edit attribute form-->
+        <form action="/edit" id="editForm" method="post" class="edit">
+            <label for="attrName" style="padding-left: 14.5px;">Edit/Add an Attribute Name:</label>
+            <input type="text" id="editName">
+            <label for="attrValue">Value:</label>
+            <input type="text" id="editValue">
+            <input type="submit" name="Edit">
+        </form>
+
+        <p style="padding-left: 2%;">List of attribute names and values can be found here:<a class="edit" href="https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute">Attributes</a></p>
+
+        <!--Edit title form-->
+        <form action="/editTitle" id="editTitleForm" method="post" class="edit">
+            <label for="SVGtitle" style="padding-left: 142.94px;">Edit Title:</label>
+            <input type="text" id="SVGtitle">
+            <input type="submit" id="submitTitle">
+        </form>
+
+        <!--Edit description form-->
+        <form action="/editDescription" id="editDescForm" method="post" class="edit">
+            <label for="SVGdesc" style="padding-left: 93.75px;">Edit Description:</label>
+            <input type="text" id="SVGdesc">
+            <input type="submit">
+        </form>
+    </div>
+
+    <script src="/index.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+
